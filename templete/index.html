@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수룡 선배</title>
+    <link rel="stylesheet" href="../asset/main.css">
+    <script  src="../asset/tab.js"></script> <!--자바스크립트 적용-->
+</head>
+<body>
+    <header>
+        <div id="signin">
+            <a href="login.html">회원가입/로그인</a>
+        </div>
+        <div class="logo">
+            <a href="index.html"><img src="../asset/이미지/수룡선배 아이콘2.png" width="400px"></a>
+        </div>
+        <nav class="folder">
+            <div class="tabs">
+                <a href="Sujung.html" class="tab"><div><span>수정캠퍼스</span></div></a>
+                <a href="Unjung.html" class="tab"><div><span>운정캠퍼스</span></div></a>
+                <a href="Bus.html" class="tab"><div><span>셔틀버스</span></div></a>
+                <a href="view.html" class="tab"><div><span>수정이 공간</span></div></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="content">
+            <div class="slider"> <!--사진 슬라이드-->
+                <div class="slide"></div>
+                <div class="slide"></div>
+                <div class="slide"></div>
+                <div class="slide"></div>
+            </div>
+            <div class="introduction">
+                <p>수룡선배란 무엇인가요?</p>
+                <p class="explanation"> : 성신여대를 처음 온 수정이들에게 전하는 선배들의 가이드북!</p>
+                <p>수룡선배 100% 활용하기!</p>
+                <p class="explanation"> : 카테고리를 클릭하여 정보(지도, 버스 시간 등)를 쉽게 얻을 수 있어요!</p>
+                <p>수룡선배 제작팀</p>
+                <p class="explanation"> 
+                    - FE: 사회교육과 이예솔, 컴퓨터공학과 노혜린 <br>
+                    - BE: 컴퓨터공학과 이정원, 윤서희, 한다연  
+                </p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>©컴공 전복자들</p>
+    </footer>
+
+    <script>
+        function toggleContent(element) {
+            var content = element.nextElementSibling;
+            if (content.style.display === "none" || content.style.display === "") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+
+        // 로그인 상태 확인
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('authToken');
+            if (token) {
+                fetch('/users/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => response.json())
+                .then(user => {
+                    if (user.username) {
+                        document.getElementById('signin').innerHTML = `
+                            ${user.username}님, 반갑습니다! 
+                            <button id="logoutButton">로그아웃</button>
+                        `;
+                        document.getElementById('logoutButton').addEventListener('click', () => {
+                            sessionStorage.removeItem('authToken');
+                            window.location.href = '/index.html';
+                        });
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+
+
+        // JavaScript를 이용하여 마우스 호버 시 이미지 변경
+document.querySelectorAll('.right p').forEach(item => {
+    item.addEventListener('mouseover', function() {
+        document.querySelectorAll('.left img').forEach(img => img.style.display = 'none');
+        const imgId = this.getAttribute('data-image');
+        const img = document.getElementById(imgId);
+        if (img) {
+            img.style.display = 'block';
+        }
+    });
+
+    item.addEventListener('mouseout', function() {
+        const imgId = this.getAttribute('data-image');
+        const img = document.getElementById(imgId);
+        if (img) {
+            img.style.display = 'none';
+        }
+    });
+});
+    </script>
+</body>
+</html>
